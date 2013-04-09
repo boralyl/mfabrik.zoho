@@ -236,3 +236,20 @@ def decode_json(json_data):
             return []
 
     return data
+
+
+def dict_to_xml(values, root="Leads"):
+    """
+    Converts a dict to the appropriate XML
+
+    """
+    root = Element(root)
+    row = Element("row", no="1")
+    root.append(row)
+
+    for key, value in values.items():
+        fl = Element("fl", val=key)
+        fl.text = value
+        row.append(fl)
+
+    return root

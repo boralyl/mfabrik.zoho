@@ -20,7 +20,8 @@ except ImportError:
     except ImportError:
         raise RuntimeError("XML library not available:  no etree, no lxml")
 
-from core import Connection, ZohoException, decode_json
+from core import Connection, ZohoException, decode_json, dict_to_xml
+
 
 class CRM(Connection):
     """ CRM specific Zoho APIs mapped to Python """
@@ -58,6 +59,22 @@ class CRM(Connection):
                 raise ZohoException(message.text)
 
         return True
+
+    def update_record(self, id, values):
+        """
+        Updates an existing record corresponding to `id`.
+
+        """
+        url = "https://crm.zoho.com/crm/private/xml/Leads/updateRecords"
+        xml = dict_to_xml(values)
+        data = {
+            'id': id,
+            'newFormat': 2,
+        }
+
+        response = self.do_xml_call(url, data, xml)
+        self.check_successful_xml(response)
+
 
     def insert_records(self, leads, extra_post_parameters={}):
         """ Insert new leads to Zoho CRM database.
