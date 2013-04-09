@@ -28,7 +28,7 @@ class CRM(Connection):
 
     def __init__(self, *args, **kwargs):
         self.select_columns = kwargs.pop("select_columns",
-                                         "Leads(First Name, Last Name)")
+                                         "leads(First Name, Last Name, Street Address, City, State Zip Code)")
         kwargs['scope'] = 'crmapi'
         super(CRM, self).__init__(*args, **kwargs)
 
