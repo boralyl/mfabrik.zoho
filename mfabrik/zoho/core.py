@@ -56,7 +56,8 @@ class Connection(object):
     """
 
 
-    def __init__(self, username, password, authtoken, scope, extra_auth_params = {}, auth_url="https://accounts.zoho.com/login"):
+    def __init__(self, username, password, authtoken, scope,
+                 extra_auth_params={}, auth_url="https://accounts.zoho.com/login"):
         """
         @param username: manifisto@mfabrik.com
 
@@ -78,6 +79,7 @@ class Connection(object):
 
         # Ticket is none until the conneciton is opened
         self.ticket = None
+        self.open()
 
     def get_service_name(self):
         """ Return API name which we are using. """
@@ -229,5 +231,8 @@ def decode_json(json_data):
         error = response.get("error", None)
         if error:
             raise ZohoException("Error while calling JSON Zoho api:" + str(error))
+        # Return an empty list if no data was found
+        if response.get("nodata", None):
+            return []
 
     return data
